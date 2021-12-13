@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>ClipBoard 测试</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../../lib/clipboard-2.0.6/clipboard.min.js"></script>
+    <link rel="stylesheet" href="../../lib/bootstrap-4.3.1-dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container pt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <form action="" class="form">
+                <div class="form-group">
+                    <label for="target">将要复制里面的内容</label>
+                    <textarea id="target" rows="10" type="text" class="form-control"></textarea>
+                </div>
+                <div class="form-group mb-5">
+                    <button type="button" class="btn btn-primary" data-clipboard-target="#target">使用 Dom 复制内容</button>
+                    <button type="button" class="clipboard btn btn-danger" data="hahahaha">使用 JS 复制内容</button>
+                </div>
+
+                <div class="form-group">
+                    <label for="test">在这里测试</label>
+                    <textarea id="test" rows="10" type="text" class="form-control" ></textarea>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    /*
+    * 或者直接在你要初始化的元素上添加 data-clipboard-text="500.00" 即可，不需要使用额外的 input 或者  textarea*/
+
+    // 剪贴板
+    let jsClipboard = new ClipboardJS('.clipboard', {
+        text: function (trigger) {
+            // trigger .clipbard 元素
+            return trigger.getAttribute('data')
+        },
+    })
+    jsClipboard.on('success', function (){
+        $('.clipboard').innerText = "已成功复制到剪贴板"
+    })
+
+  var clipboard = new ClipboardJS('.btn-primary');
+
+  clipboard.on('success', function(e) {
+    console.info('Action:', e.action);
+    console.info('Text:', e.text);
+    console.info('Trigger:', e.trigger);
+    e.clearSelection();
+    $('.btn-primary').innerText = "已成功复制到剪贴板"
+  });
+
+  (()=> {
+    $('#target').value = `便捷的按月付款方式
+        如果你希望以经济实惠的月付方式购买产品，我们提供一系列分期付款选项。
+
+        分期付款合作伙伴
+        从我们的多家分期付款合作伙伴中挑选一家，并选择适合你的分期付款期限 (如 12 个月)。
+
+        Apple Store 在线商店和 Apple Store 零售店
+        Apple Store 在线商店和 Apple Store 零售店均提供分期付款方案。
+
+        店内的分期付款方案与上述方案不同。请到店咨询 Specialist 专家。`
+  })();
+
+  function $(selector) {return document.querySelector(selector)}
+</script>
+</body>
+</html>
